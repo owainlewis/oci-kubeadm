@@ -2,6 +2,8 @@
 
 This Ansible playbook will install a Kubernetes cluster on Oracle Cloud Infrastructure.
 
+It does not create the underlying OCI infrastructure required to run your Kubernetes cluster.
+
 ## Scope
 
 1. Provision a Kubernetes cluster using kubeadm (DONE)
@@ -11,7 +13,9 @@ This Ansible playbook will install a Kubernetes cluster on Oracle Cloud Infrastr
 
 # Usage
 
-Add the system information gathered above into a file called `hosts.ini`. For example:
+1. Create 3 (or more) OCI compute instances. Ensure that the VCN subnet security list rules are permissive enough (TODO)
+2. Update the hosts.ini file with the IP addresses of your cluster nodes. 
+
 ```
 [master]
 192.16.35.12
@@ -24,6 +28,8 @@ master
 node
 ```
 
+This playbook assumes you are using OEL but you can modify the ssh user in group_vars if needed (SSH user defaults to opc).
+
 ### Choose your CNI / Networking solution
 
 ```yaml
@@ -35,17 +41,9 @@ network: flannel
 
 ```sh
 $ ansible-playbook site.yaml
-...
-==> master1: TASK [addon : Create Kubernetes dashboard deployment] **************************
-==> master1: changed: [192.16.35.12 -> 192.16.35.12]
-==> master1:
-==> master1: PLAY RECAP *********************************************************************
-==> master1: 192.16.35.10               : ok=18   changed=14   unreachable=0    failed=0
-==> master1: 192.16.35.11               : ok=18   changed=14   unreachable=0    failed=0
-==> master1: 192.16.35.12               : ok=34   changed=29   unreachable=0    failed=0
 ```
 
-Download the `admin.conf` from the master node:
+### Download `admin.conf` from the master node
 
 ```sh
 $ scp opc@k8s-master-ip:/etc/kubernetes/admin.conf .
@@ -56,7 +54,8 @@ Verify cluster is fully running using kubectl:
 ```sh
 $ export KUBECONFIG=~/admin.conf
 $ kubectl get nodes
-NAME               STATUS    ROLES     AGE       VERSION                                                              kubeadm-master     Ready     master    11m       v1.11.3
+NAME               STATUS    ROLES     AGE       VERSION
+kubeadm-master     Ready     master    11m       v1.11.3
 kubeadm-worker-1   Ready     <none>    10m       v1.11.3
 kubeadm-worker-2   Ready     <none>    10m       v1.11.3
 ```
