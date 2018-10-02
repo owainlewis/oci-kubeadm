@@ -1,6 +1,6 @@
 # Kubeadm Ansible Playbook (Oracle Cloud Infrastructure)
 
-This Ansible playbook will install a Kubernetes cluster on Oracle Cloud Infrastructure.
+This Ansible playbook will install a Kubernetes cluster on Oracle Cloud Infrastructure using kubeadm.
 
 It does not create the underlying OCI infrastructure required to run your Kubernetes cluster.
 
