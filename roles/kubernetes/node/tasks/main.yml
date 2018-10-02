@@ -1,11 +1,11 @@
 ---
 
-- name: Reset Kubernetes component
+- name: Reset kubeadm
   shell: "kubeadm reset --force"
   register: reset_cluster
 
 - name: Join to Kubernetes cluster
-  when: reset_cluster|succeeded
+  when: reset_cluster | succeeded
   shell: |
     kubeadm join --skip-preflight-checks \
                  --token {{ token }} \
@@ -13,7 +13,7 @@
                  --discovery-token-unsafe-skip-ca-verification
   register: join_cluster
 
-- name: Enable and restart kubelet engine
+- name: Enable and restart kubelet
   systemd:
     name: kubelet
     daemon_reload: yes
