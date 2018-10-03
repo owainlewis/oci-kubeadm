@@ -8,4 +8,4 @@ build:
 	@ansible-playbook site.yaml
 
 reset:
-	@ansible-playbook site-reset.yaml
+	@ansible-playbook reset-site.yaml

@@ -14,7 +14,7 @@ It does not create the underlying OCI infrastructure required to run your Kubern
 # Usage
 
 1. Create 3 (or more) OCI compute instances. Ensure that the VCN subnet security list rules are permissive enough (TODO)
-2. Update the hosts.ini file with the IP addresses of your cluster nodes. 
+2. Update the hosts.ini file with the IP addresses of your cluster nodes.
 
 ```
 [master]
@@ -26,6 +26,14 @@ It does not create the underlying OCI infrastructure required to run your Kubern
 [kube-cluster:children]
 master
 node
+```
+
+3. You will also want to update values in the group_vars section to select the correct K8s version and join token
+
+To generate a random token
+
+```sh
+LC_CTYPE=C tr -dc a-z0-9 < /dev/random | fold -w ${1:-16} | head -n 1
 ```
 
 This playbook assumes you are using OEL but you can modify the ssh user in group_vars if needed (SSH user defaults to opc).
