@@ -20,8 +20,14 @@ systemctl enable kubelet && sudo systemctl start kubelet
 # Manage firewall
 systemctl disable firewalld && systemctl stop firewalld
 
+cat > config.yaml <<EOL
+kind: MasterConfiguration
+apiVersion: kubeadm.k8s.io/v1alpha1
+cloudProvider: external
+EOL
+
 # Install Kubeadm (follow post install steps)
-kubeadm init --pod-network-cidr 10.244.0.0/16
+kubeadm init --config config.yaml --pod-network-cidr 10.244.0.0/16
 
 # mkdir -p $HOME/.kube
 # sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
