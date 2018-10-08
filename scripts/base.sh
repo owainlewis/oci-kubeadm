@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# Run for all nodes
+
+echo "Running basic setup"
+
+# Disable swap
+swapoff -a
+
 # Update system
 yum update -y
 
