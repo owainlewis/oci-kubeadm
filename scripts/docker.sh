@@ -25,4 +25,4 @@ yum-config-manager \
 yum install -y docker-ce
 
 # Add current user to Docker group
-# usermod -aG docker $(whoami)
+usermod -aG docker $(whoami)
