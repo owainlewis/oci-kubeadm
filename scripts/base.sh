@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Run for all nodes
-
 echo "Running basic setup"
 
 # Disable swap
