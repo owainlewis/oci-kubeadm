@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Update system
+yum update -y
+
+# Disable SELinux
+setenforce 0
 
 # Remove existing Docker packages
 yum remove docker \
@@ -12,7 +18,7 @@ yum remove docker \
            docker-engine-selinux \
            docker-engine
 
-# Install prerequisites 
+# Install Docker prerequisites 
 yum install -y \
     yum-utils \
     device-mapper-persistent-data \
