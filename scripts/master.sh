@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Provisioning K8s master"
+
 # Update system
 yum update -y
 
