@@ -11,7 +11,6 @@
   become: yes
   roles:
     - { role: kubernetes/master, tags: master }
-    - { role: cni, tags: cni }
 
 - hosts: node
   gather_facts: yes

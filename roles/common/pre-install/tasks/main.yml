@@ -6,6 +6,13 @@
 - name: Disable system swap
   shell: "swapoff -a"
 
+# NOTE please make this more specific
+- name: Stop and disable firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: False
+
 - name: Remove current swaps from fstab
   lineinfile:
     dest: /etc/fstab

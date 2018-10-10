@@ -1,33 +1,14 @@
 # Ansible
 ansible_user: opc
 
-# Kubernetes
-kube_version: v1.12.0
-token: b0f7b8.8d1767876297d85c
+kubernetes:
+  version: v1.12.0
+  service_cidr: "10.96.0.0/12"
+  pod_network_cidr: "10.244.0.0/16"
 
-# 1.8.x feature: --feature-gates SelfHosting=true
-init_opts: ""
-# Any other additional opts you want to add..
-kubeadm_opts: ""
-# For example:
-# kubeadm_opts: '--apiserver-cert-extra-sans "k8s.domain.com,kubernetes.domain.com"'
-
-# Network
-service_cidr: "10.96.0.0/12"
-# Pod CIDR
-pod_network_cidr: "10.244.0.0/16"
-# Networking implementation('flannel', 'calico')
-network: calico
-
-# Change this to an appropriate interface, preferably a private network.
-cni_opts: "interface=eth1"
-
-# A list of insecure registrys you might need to define
-insecure_registrys: ""
-# insecure_registrys: ['gcr.io']
-
-systemd_dir: /lib/systemd/system
-system_env_dir: /etc/sysconfig
-network_dir: /etc/kubernetes/network
-kubeadmin_config: /etc/kubernetes/admin.conf
-kube_addon_dir: /etc/kubernetes/addon
+kubeadm:
+  token: a0f7b8.8d1767876297d85a
+  init_opts: ""
+  # Any other additional opts you want to add..
+  # kubeadm_opts: '--apiserver-cert-extra-sans "k8s.domain.com,kubernetes.domain.com"'
+  opts: ""

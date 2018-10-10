@@ -1,16 +1,18 @@
 ---
 
-- name: Reset kubeadm
+- name: Debug hostvars
+  debug: var=hostvars[groups['master'][0]]["discovery-token-ca-cert-hash"].stdout
+
+- name: Reset kubeadm0
   shell: "kubeadm reset --force"
   register: reset_cluster
 
 - name: Join to Kubernetes cluster
   when: reset_cluster | succeeded
   shell: |
-    kubeadm join --skip-preflight-checks \
-                 --token {{ token }} \
-                 {{ groups['master'][0] }}:6443 \
-                 --discovery-token-unsafe-skip-ca-verification
+      kubeadm join {{ groups['master'][0] }}:6443 \
+        --token {{ kubeadm.token }} \
+        --discovery-token-ca-cert-hash sha256:{{ hostvars[groups['master'][0]]["discovery-token-ca-cert-hash"].stdout }}
   register: join_cluster
 
 - name: Enable and restart kubelet
