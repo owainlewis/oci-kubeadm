@@ -28,27 +28,10 @@ master
 node
 ```
 
-3. You will also want to update values in the group_vars section to select the correct K8s version and join token
-
-To generate a random token
-
-```sh
-LC_CTYPE=C tr -dc a-z0-9 < /dev/random | fold -w ${1:-16} | head -n 1
-```
-
-This playbook assumes you are using OEL but you can modify the ssh user in group_vars if needed (SSH user defaults to opc).
-
-### Choose your CNI / Networking solution
-
-```yaml
-# Network implementation('flannel', 'calico')
-network: flannel
-```
-
 ### Run the plabook
 
 ```sh
-$ ansible-playbook site.yaml
+$ make
 ```
 
 ### Download `admin.conf` from the master node
@@ -66,12 +49,4 @@ NAME               STATUS    ROLES     AGE       VERSION
 kubeadm-master     Ready     master    11m       v1.11.3
 kubeadm-worker-1   Ready     <none>    10m       v1.11.3
 kubeadm-worker-2   Ready     <none>    10m       v1.11.3
-```
-
-# Resetting the environment
-
-Finally, reset all kubeadm installed state using `reset-site.yaml` playbook:
-
-```sh
-$ ansible-playbook reset-site.yaml
 ```
