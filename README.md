@@ -45,7 +45,7 @@ $ scp opc@k8s-master-ip:/etc/kubernetes/admin.conf .
 Verify cluster is fully running using kubectl:
 
 ```sh
-$ export KUBECONFIG=~/admin.conf
+$ export KUBECONFIG=admin.conf
 $ kubectl get nodes
 NAME               STATUS    ROLES     AGE       VERSION
 kubeadm-master     Ready     master    11m       v1.11.3
