@@ -1,8 +1,4 @@
 ---
-
-- name: Debug hostvars
-  debug: var=hostvars[groups['master'][0]]["discovery-token-ca-cert-hash"].stdout
-
 - name: Reset kubeadm0
   shell: "kubeadm reset --force"
   register: reset_cluster
