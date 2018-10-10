@@ -4,6 +4,8 @@ This Ansible playbook will install a Kubernetes cluster on Oracle Cloud Infrastr
 
 It does not create the underlying OCI infrastructure required to run your Kubernetes cluster.
 
+* This is aimed at OEL / CentOS only *
+
 ## Scope
 
 1. Provision a Kubernetes cluster using kubeadm (DONE)
@@ -13,7 +15,7 @@ It does not create the underlying OCI infrastructure required to run your Kubern
 
 # Usage
 
-1. Create 3 (or more) OCI compute instances. Ensure that the VCN subnet security list rules are permissive enough (TODO)
+1. Create 3 (or more) OCI OEL compute instances. Ensure that the VCN subnet security list rules are permissive enough (TODO)
 2. Update the hosts.ini file with the IP addresses of your cluster nodes.
 
 ```
