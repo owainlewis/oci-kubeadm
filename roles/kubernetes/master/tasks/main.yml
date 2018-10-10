@@ -45,10 +45,9 @@
     openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
     openssl dgst -sha256 -hex | sed 's/^.* //'
   register: discovery-token-ca-cert-hash
-#  debug: msg={{ hostvars }}
 
-## TODO move to CNI and configurable network
-- name: Install Flannel
+# TODO make this configurable 
+- name: Install overlay network (Flannel)
   shell: |
     kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
     kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
