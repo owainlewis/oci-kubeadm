@@ -4,7 +4,7 @@ This Ansible playbook will install a Kubernetes cluster on Oracle Cloud Infrastr
 
 It does not create the underlying OCI infrastructure required to run your Kubernetes cluster.
 
-* This is aimed at OEL / CentOS only *
+**This playbook targets OEL / CentOS only**
 
 ## Scope
 
