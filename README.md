@@ -46,10 +46,10 @@ $ scp opc@$(PUBLIC_IP):/etc/kubernetes/admin.conf .
 Verify cluster is fully running using kubectl:
 
 ```sh
-$ export KUBECONFIG=admin.conf
-$ kubectl get nodes
-NAME               STATUS    ROLES     AGE       VERSION
-kubeadm-master     Ready     master    11m       v1.11.3
-kubeadm-worker-1   Ready     <none>    10m       v1.11.3
-kubeadm-worker-2   Ready     <none>    10m       v1.11.3
+❯ export KUBECONFIG=admin.conf
+❯ kubectl get nodes
+NAME                    STATUS    ROLES     AGE       VERSION
+kubeadm-master          Ready     master    2m        v1.12.1
+kubeadm-worker-1        Ready     <none>    2m        v1.12.1
+kubeadm-worker-2        Ready     <none>    2m        v1.12.1
 ```

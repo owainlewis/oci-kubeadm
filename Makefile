@@ -1,4 +1,4 @@
 all: build
 
 build:
-	@ansible-playbook site.yaml
+	@ansible-playbook -v site.yaml
