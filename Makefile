@@ -1,4 +1,4 @@
 all: build
 
 build:
-	@ansible-playbook -v site.yaml
+	@ansible-playbook -vi hosts.ini site.yaml

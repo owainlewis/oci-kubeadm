@@ -4,7 +4,7 @@
   register: reset_cluster
 
 - name: Init Kubernetes cluster
-  when: reset_cluster | succeeded
+  when: reset_cluster is succeeded
   shell: |
     kubeadm init --kubernetes-version {{ kubernetes.version }} \
                  --pod-network-cidr {{ kubernetes.pod_network_cidr }} \
@@ -46,7 +46,7 @@
     openssl dgst -sha256 -hex | sed 's/^.* //'
   register: discovery-token-ca-cert-hash
 
-# TODO make this configurable 
+# TODO make this configurable
 - name: Install overlay network (Flannel)
   shell: |
     kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml

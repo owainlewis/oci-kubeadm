@@ -4,7 +4,7 @@
   register: reset_cluster
 
 - name: Join to Kubernetes cluster
-  when: reset_cluster | succeeded
+  when: reset_cluster is succeeded
   shell: |
       kubeadm join {{ groups['master'][0] }}:6443 \
         --token {{ kubeadm.token }} \
