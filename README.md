@@ -39,7 +39,7 @@ $ make
 ### Download `admin.conf` from the master node
 
 ```sh
-$ scp opc@k8s-master-ip:/etc/kubernetes/admin.conf .
+$ scp opc@$(PUBLIC_IP):/etc/kubernetes/admin.conf .
 ```
 
 Verify cluster is fully running using kubectl:

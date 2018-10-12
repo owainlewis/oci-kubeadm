@@ -1,2 +1,4 @@
 admin.conf
 *.retry
+cloud-provider.yaml
+admin.conf
