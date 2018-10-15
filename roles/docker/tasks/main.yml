@@ -1,19 +1,11 @@
 ---
-- name: Install yum utils
-  yum:
-    name: yum-utils
-    state: latest
-
-- name: Install device-mapper-persistent-data
-  yum:
-    name: device-mapper-persistent-data
-    state: latest
-
-- name: Install lvm2
-  yum:
-    name: lvm2
-    state: latest
-
+- name: Install docker yum packages
+  yum: name={{item}} state=latest
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+    
 - name: Add Docker repo
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
