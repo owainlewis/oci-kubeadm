@@ -9,7 +9,6 @@ It does not create the underlying OCI infrastructure required to run your Kubern
 ## Scope
 
 1. Provision a Kubernetes cluster using kubeadm (DONE)
-  - Use kubeadm config (TODO)
 2. Install the Oracle Cloud Controller Manager
 3. Install the Oracle OCI CSI Storage plugin (TODO)
 4. Install the Oracle OCI CNI Networking plugin (TODO)
