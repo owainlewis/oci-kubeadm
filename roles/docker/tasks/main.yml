@@ -1,6 +1,9 @@
 ---
+
 - name: Install docker yum packages
-  yum: name={{item}} state=latest
+  yum:
+    name: "{{item}}"
+    state: latest
   with_items:
     - yum-utils
     - device-mapper-persistent-data
