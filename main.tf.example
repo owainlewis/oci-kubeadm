@@ -1,14 +1,11 @@
 module "k8s" {
 
   source = "./terraform"
-
-  tenancy_ocid = "ocid1.tenancy.oc1..aaaaaaaaxf3fuazosc6xng7l75rj6uist5jb6ken64t3qltimxnkymddqbma"
-  compartment_ocid = "ocid1.compartment.oc1..aaaaaaaaob4ckouj3cjmf36ifjkff33wvln5fnnarumafqzpqq7tmbig2n5q"
-
-  user_ocid        = "ocid1.user.oc1..aaaaaaaa3p67n2kmpxnbcnffjow6j5bhe6jze3obob3cjdctfftyfd4zou2q"
+  tenancy_ocid = "ocid1.tenancy.oc1.."
+  compartment_ocid = "ocid1.compartment.oc1.."
+  user_ocid        = "ocid1.user.oc1.."
   private_key_path = "/Users/owainlewis/.oci/oci_api_key.pem"
-  fingerprint      = "a4:bb:34:43:54:c5:af:a5:4b:23:ce:82:2d:7f:12:45"
-
+  fingerprint      = "a4:bb:34:43:54:..."
   region = "uk-london-1"
 
   ssh_public_key = "${file("/Users/owainlewis/.ssh/id_rsa.pub")}"
