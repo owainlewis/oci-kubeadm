@@ -2,3 +2,7 @@ admin.conf
 *.retry
 cloud-provider.yaml
 admin.conf
+main.tf
+.terraform
+*.tfstate
+*.tfstate.backup
