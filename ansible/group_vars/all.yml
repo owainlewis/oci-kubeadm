@@ -8,7 +8,3 @@ kubernetes:
 
 kubeadm:
   token: a0f7b8.8d1767876297d85a
-  init_opts: ""
-  # Any other additional opts you want to add..
-  # kubeadm_opts: '--apiserver-cert-extra-sans "k8s.domain.com,kubernetes.domain.com"'
-  opts: ""

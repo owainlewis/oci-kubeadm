@@ -1,6 +1,6 @@
 resource "oci_core_subnet" "subnet_ad_1" {
   availability_domain = "${lookup(data.oci_identity_availability_domains.all.availability_domains[0], "name")}"
-  cidr_block          = "10.0.0.0/24"
+  cidr_block          = "${var.node_subnet_ad_1_cidr}"
   display_name        = "k8s-ad-1"
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.vcn.id}"
@@ -12,7 +12,7 @@ resource "oci_core_subnet" "subnet_ad_1" {
 
 resource "oci_core_subnet" "subnet_ad_2" {
   availability_domain = "${lookup(data.oci_identity_availability_domains.all.availability_domains[1], "name")}"
-  cidr_block          = "10.0.1.0/24"
+  cidr_block          = "${var.node_subnet_ad_2_cidr}"
   display_name        = "k8s-ad-2"
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.vcn.id}"
@@ -24,7 +24,7 @@ resource "oci_core_subnet" "subnet_ad_2" {
 
 resource "oci_core_subnet" "subnet_ad_3" {
   availability_domain = "${lookup(data.oci_identity_availability_domains.all.availability_domains[2], "name")}"
-  cidr_block          = "10.0.2.0/24"
+  cidr_block          = "${var.node_subnet_ad_3_cidr}"
   display_name        = "k8s-ad-3"
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_virtual_network.vcn.id}"
