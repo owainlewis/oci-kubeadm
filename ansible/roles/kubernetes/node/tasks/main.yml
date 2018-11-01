@@ -1,20 +1,49 @@
 ---
-- name: Reset kubeadm0
+- name: Set kubeadm_discovery_address
+  set_fact:
+    kubeadm_discovery_address: >-
+      {%- if "127.0.0.1" in kube_apiserver_endpoint or "localhost" in kube_apiserver_endpoint -%}
+      {{ first_kube_master }}:6443
+      {%- else -%}
+      {{ kube_apiserver_endpoint }}
+      {%- endif %}
+  tags:
+    - facts
+
+- name: Reset kubeadm
   shell: "kubeadm reset --force"
-  register: reset_cluster
 
-- name: Join to Kubernetes cluster
-  when: reset_cluster is succeeded
-  shell: |
-      kubeadm join {{ groups['master'][0] }}:6443 \
-        --token {{ kubeadm.token }} \
-        --discovery-token-ca-cert-hash sha256:{{ hostvars[groups['master'][0]]["discovery-token-ca-cert-hash"].stdout }}
-  register: join_cluster
+- name: Calculate kubeadm CA cert hash
+  shell: openssl x509 -pubkey -in etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+  register: kubeadm_ca_hash
+  delegate_to: "{{ groups['master']|first }}"
+  changed_when: false
+  run_once: true
 
-- name: Enable and restart kubelet
-  systemd:
-    name: kubelet
-    daemon_reload: yes
-    state: restarted
-    enabled: yes
-  register: started_kubelet
+- name: Create kubeadm token for joining nodes with 24h expiration (default)
+  command: "kubeadm token create"
+  run_once: true
+  register: join_token
+  delegate_to: "{{ groups['master']|first }}"
+
+- name: Create kubeadm client config
+  template:
+    src: "kubeadm-client.conf.v1alpha3.j2"
+    dest: "/etc/kubernetes/kubeadm-client.conf.v1alpha3.j2"
+    backup: yes
+  when: inventory_hostname in groups['node']
+  vars:
+    kubeadm_token: "{{ join_token.stdout }}"
+
+- name: Join to cluster
+  command: >-
+    kubeadm join
+    --config /etc/kubernetes/kubeadm-client.conf.v1alpha3.j2
+    --ignore-preflight-errors=all
+  register: kubeadm_join
+
+- name: Wait for kubelet bootstrap to create config
+  wait_for:
+    path: "/etc/kubernetes/kubelet.conf"
+    delay: 1
+    timeout: 60

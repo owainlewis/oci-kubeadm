@@ -1,0 +1,14 @@
+apiVersion: kubeadm.k8s.io/v1alpha3
+kind: JoinConfiguration
+discoveryFile: ""
+caCertPath: /etc/kubernetes/pki/ca.crt
+discoveryTimeout: 5m0s
+discoveryToken: {{ kubeadm_token }}
+tlsBootstrapToken: {{ kubeadm_token }}
+token: {{ kubeadm_token }}
+discoveryTokenAPIServers:
+- {{ kubeadm_discovery_address | replace("https://", "")}}
+discoveryTokenUnsafeSkipCAVerification: true
+nodeRegistration:
+  kubeletExtraArgs:
+    cloud-provider: external

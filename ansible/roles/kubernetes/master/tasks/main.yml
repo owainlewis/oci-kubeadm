@@ -3,16 +3,33 @@
   shell: "kubeadm reset --force"
   register: reset_cluster
 
-- name: Init Kubernetes cluster
-  when: reset_cluster is succeeded
-  shell: |
-    kubeadm init --kubernetes-version {{ kubernetes.version }} \
-                 --pod-network-cidr {{ kubernetes.pod_network_cidr }} \
-                 --token {{ kubeadm.token }} \
-                 --apiserver-advertise-address {{ groups['master'][0] }} \
-                 {{ kubeadm.opts }} \
-                 {{ kubeadm.init_opts }} > join_command.txt
-  register: init_cluster
+- name: kubeadm | Aggregate all SANs
+  set_fact:
+    apiserver_sans: >-
+      kubernetes
+      kubernetes.default
+      kubernetes.default.svc
+      localhost
+      127.0.0.1
+      {{ ' '.join(groups['master']) }}
+      {%- for host in groups['master'] -%}
+      {%- if hostvars[host]['access_ip'] is defined %}{{ hostvars[host]['access_ip'] }}{% endif %}
+      {{ hostvars[host]['ip'] | default(hostvars[host]['ansible_default_ipv4']['address']) }}
+      {%- endfor %}
+  tags: facts
+
+- name: kubeadm | Create kubeadm config file
+  template:
+    src: "kubeadm-config.v1alpha3.yaml.j2"
+    dest: "/etc/kubernetes/kubeadm-config.v1alpha3.yaml.j2"
+  register: kubeadm_config
+
+- name: kubeadm | Initialize first master
+  command: kubeadm init --config=/etc/kubernetes/kubeadm-config.v1alpha3.yaml.j2 --ignore-preflight-errors=all
+  register: kubeadm_init
+  retries: 3
+  failed_when: kubeadm_init.rc != 0 and "field is immutable" not in kubeadm_init.stderr
+  notify: Master | restart kubelet
 
 - name: Create Kubernetes config directory
   become: false
@@ -22,7 +39,6 @@
   file: path=/etc/kubernetes/admin.conf mode=0775
 
 - name: Copy admin.conf to Home directory
-  when: init_cluster and ansible_user is defined
   become: false
   copy:
     src: "/etc/kubernetes/admin.conf"
@@ -32,21 +48,25 @@
     mode: 0755
     remote_src: True
 
-- name: Enable and restart kubelet engine
-  systemd:
-    name: kubelet
-    daemon_reload: yes
-    state: restarted
-    enabled: yes
-  register: started_kubelet
+- name: Copy admin.conf locally
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: admin.conf
+    flat: yes
+  delegate_to: "{{ groups['master']|first }}"
+  run_once: true
 
-- name: Register discovery token CA hash
-  shell: |
-    openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
-    openssl dgst -sha256 -hex | sed 's/^.* //'
-  register: discovery-token-ca-cert-hash
+- name: kubeadm | Enable kube-proxy
+  command: "kubeadm alpha phase addon kube-proxy --config=/etc/kubernetes/kubeadm-config.v1alpha3.yaml.j2"
+  when: inventory_hostname == groups['master']|first
+  changed_when: false
 
-# TODO make this configurable
+- name: kubeadm | Remove taint for master with node role
+  command: "kubectl taint node {{ inventory_hostname }} node-role.kubernetes.io/master:NoSchedule-"
+  delegate_to: "{{groups['master']|first}}"
+  when: inventory_hostname in groups['node']
+  failed_when: false--
+
 - name: Install overlay network (Flannel)
   shell: |
     kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml

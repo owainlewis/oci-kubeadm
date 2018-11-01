@@ -1,0 +1,14 @@
+---
+is_kube_master: "{{ inventory_hostname in groups['master'] }}"
+kube_apiserver_count: "{{ groups['master'] | length }}"
+kube_apiserver_address: "{{ ip | default(ansible_default_ipv4['address']) }}"
+kube_apiserver_access_address: "{{ access_ip | default(kube_apiserver_address) }}"
+first_kube_master: "{{ hostvars[groups['master'][0]]['access_ip'] | default(hostvars[groups['master'][0]]['ip'] | default(hostvars[groups['master'][0]]['ansible_default_ipv4']['address'])) }}"
+kube_apiserver_endpoint: |-
+  {%- if is_kube_master -%}
+       https://127.0.0.1:6443
+  {%- else -%}
+       https://{{ first_kube_master }}:6443
+  {%- endif %}
+kube_apiserver_client_cert: "/etc/kubernetes/pki/ca.crt"
+kube_apiserver_client_key: "/etc/kubernetes/pki/ca.key"

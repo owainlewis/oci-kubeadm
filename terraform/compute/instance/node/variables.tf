@@ -8,7 +8,6 @@ variable "count" {
 variable "availability_domain" {}
 variable "shape" {}
 variable "subnet_id" {}
-
 variable "display_name_prefix" {}
 
 variable "oracle_linux_image_name" {
