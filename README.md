@@ -13,42 +13,41 @@ It does not create the underlying OCI infrastructure required to run your Kubern
 3. Install the Oracle OCI CSI Storage plugin (TODO)
 4. Install the Oracle OCI CNI Networking plugin (TODO)
 
-# Usage
+# Getting started
 
-1. Create 3 (or more) OCI OEL compute instances. Ensure that the VCN subnet security list rules are permissive enough (TODO)
-2. Update the hosts.ini file with the IP addresses of your cluster nodes.
+1. Create the OCI infrastructure for your cluster. This requires a recent install of the OCI terraform provider.
+
+```
+make infra
+```
+
+2. Update the hosts.ini file with the cluster information generated above
 
 ```
 [master]
 192.16.35.12
 
 [node]
-192.16.35.[10:11]
+192.16.35.[10:11:12]
 
 [kube-cluster:children]
 master
 node
 ```
 
-### Run the plabook
+### Run the Ansible playbook
 
 ```sh
 $ make
 ```
 
-### Download `admin.conf` from the master node
+### Verify
+
+Verify cluster is fully running:
 
 ```sh
-$ scp opc@$(PUBLIC_IP):/etc/kubernetes/admin.conf .
-```
-
-Verify cluster is fully running using kubectl:
-
-```sh
-❯ export KUBECONFIG=admin.conf
-❯ kubectl get nodes
-NAME                    STATUS    ROLES     AGE       VERSION
-kubeadm-master          Ready     master    2m        v1.12.1
-kubeadm-worker-1        Ready     <none>    2m        v1.12.1
-kubeadm-worker-2        Ready     <none>    2m        v1.12.1
+➜  oci-kubeadm git:(master) KUBECONFIG=ansible/admin.conf kubectl get nodes
+NAME                STATUS    ROLES     AGE       VERSION
+k8s-master-ad-1-0   Ready     master    1m        v1.12.2
+k8s-node-ad-1-0     Ready     <none>    1m        v1.12.2
 ```
