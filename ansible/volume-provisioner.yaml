@@ -3,4 +3,4 @@
   gather_facts: yes
   become: yes
   roles:
-    - { role: addons/ccm, tags: master }
+    - { role: addons/volume-provisioner, tags: master }
