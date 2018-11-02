@@ -1,17 +1,27 @@
 # Kubeadm Ansible Playbook (Oracle Cloud Infrastructure)
 
-This Ansible playbook will install a Kubernetes cluster on Oracle Cloud Infrastructure using kubeadm.
+This project will help you create a Kubernetes cluster on Oracle Cloud Infrastructure. It uses Terraform to provision infrastructure and Ansible to configure and install Kubernetes.
 
-It does not create the underlying OCI infrastructure required to run your Kubernetes cluster.
+In an effort to keep things simple, this project only targets CentOS and Oracle Linux.
 
-**This playbook targets OEL / CentOS only**
+### Prerequisites 
+
+1. Terraform
+2. Ansible
+3. The Terraform provider for OCI
+4. An Oracle Cloud Infrastructure account
 
 ## Scope
 
-1. Provision a Kubernetes cluster using kubeadm (DONE)
-2. Install the Oracle Cloud Controller Manager
-3. Install the Oracle OCI CSI Storage plugin (TODO)
-4. Install the Oracle OCI CNI Networking plugin (TODO)
+[] Provision a Kubernetes cluster using kubeadm
+[] Install the Oracle Cloud Controller Manager
+[] High Availability (Multi Master)
+[] Upgrade
+
+## To Do
+
+[] Install the Oracle OCI CSI Storage plugin 
+[] Install the Oracle OCI CNI Networking plugin
 
 # Getting started
 
@@ -46,8 +56,10 @@ $ make
 Verify cluster is fully running:
 
 ```sh
-➜  oci-kubeadm git:(master) KUBECONFIG=ansible/admin.conf kubectl get nodes
+➜  oci-kubeadm git:(master) k get nodes
 NAME                STATUS    ROLES     AGE       VERSION
-k8s-master-ad-1-0   Ready     master    1m        v1.12.2
-k8s-node-ad-1-0     Ready     <none>    1m        v1.12.2
+k8s-master-ad-1-0   Ready     master    3h        v1.12.2
+k8s-node-ad-1-0     Ready     <none>    3h        v1.12.2
+k8s-node-ad-2-0     Ready     <none>    3h        v1.12.2
+k8s-node-ad-3-0     Ready     <none>    3h        v1.12.2
 ```
