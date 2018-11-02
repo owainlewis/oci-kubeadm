@@ -1,5 +1,5 @@
 ---
-- name: Apply OCI CCM config
+- name: Apply OCI Cloud Controller Manager config
   shell:
     cmd: |
       cat <<EOF | kubectl apply --kubeconfig=/etc/kubernetes/admin.conf -f -
@@ -12,10 +12,12 @@
         cloud-provider.yaml: {{ lookup('template', './cloud-provider-config.yaml.j2') | b64encode }}
       EOF
 
-- name: Apply OCI CCM RBAC
+- name: Apply OCI Cloud Controller Manager RBAC
   shell: |
-    kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f https://github.com/oracle/oci-cloud-controller-manager/releases/download/0.7.0/oci-cloud-controller-manager-rbac.yaml
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f \
+    https://raw.githubusercontent.com/oracle/oci-cloud-controller-manager/master/manifests/cloud-controller-manager/oci-cloud-controller-manager-rbac.yaml
 
-- name: Apply OCI CCM DaemonSet
+- name: Apply OCI Cloud Controller Manager DaemonSet
   shell: |
-    kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f https://github.com/oracle/oci-cloud-controller-manager/releases/download/0.7.0/oci-cloud-controller-manager.yaml
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f \
+    https://raw.githubusercontent.com/oracle/oci-cloud-controller-manager/master/manifests/cloud-controller-manager/oci-cloud-controller-manager.yaml

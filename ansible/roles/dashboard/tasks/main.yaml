@@ -1,0 +1,4 @@
+---
+- name: Apply K8s Dashboard
+  shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml

@@ -1,5 +1,4 @@
 ---
-
 - hosts: kube-cluster
   gather_facts: yes
   become: yes
@@ -17,3 +16,5 @@
   become: yes
   roles:
     - { role: kubernetes/node, tags: node }
+
+

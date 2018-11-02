@@ -17,8 +17,8 @@ resource "oci_core_security_list" "node" {
       source   = "0.0.0.0/0"
 
       icmp_options {
-	"type" = 3
-	"code" = 4
+	      "type" = 3
+        "code" = 4
       }
     },
 
@@ -27,8 +27,8 @@ resource "oci_core_security_list" "node" {
       source   = "0.0.0.0/0"
 
       tcp_options {
-	"min" = 6443
-	"max" = 6443
+	      "min" = 6443
+	      "max" = 6443
       }
     },
 
@@ -42,8 +42,8 @@ resource "oci_core_security_list" "node" {
       source   = "0.0.0.0/0"
 
       tcp_options {
-	"min" = 22
-	"max" = 22
+	      "min" = 22
+	      "max" = 22
       }
     },
 
@@ -53,8 +53,8 @@ resource "oci_core_security_list" "node" {
       source   = "0.0.0.0/0"
 
       tcp_options {
-	"min" = 30000
-	"max" = 32767
+	      "min" = 30000
+	      "max" = 32767
       }
     },
   ]
