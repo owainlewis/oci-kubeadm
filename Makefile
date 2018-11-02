@@ -12,6 +12,9 @@ build:
 ccm:
 	@ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/ccm.yaml
 
+storage:
+	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/storage.yaml
+
 .PHONY: destroy
 destroy:
 	terraform destroy
