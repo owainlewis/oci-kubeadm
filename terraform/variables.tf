@@ -6,11 +6,11 @@ variable "private_key_path" {}
 variable "region" {}
 
 variable "node_shape" {
-  default = "VM.Standard2.1"
+  default = "VM.Standard1.1"
 }
 
 variable "master_shape" {
-  default = "VM.Standard2.1"
+  default = "VM.Standard1.1"
 }
 
 variable "ssh_public_key" {
