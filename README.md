@@ -29,7 +29,10 @@ In an effort to keep things simple, this project only targets CentOS and Oracle 
 1. Create the OCI infrastructure for your cluster. This requires a recent install of the OCI terraform provider.
 
 ```
-make infra
+# Update main.tf with your personal settings
+cp main.tf.example main.tf
+# Run Terraform
+terraform apply
 ```
 
 2. Update the hosts.ini file with the cluster information generated above
