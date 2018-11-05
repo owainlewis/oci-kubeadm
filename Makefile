@@ -18,3 +18,5 @@ storage:
 .PHONY: destroy
 destroy:
 	terraform destroy
+
+rebuild: destroy infra
