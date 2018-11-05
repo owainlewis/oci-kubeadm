@@ -11,17 +11,18 @@ In an effort to keep things simple, this project only targets CentOS and Oracle 
 3. The Terraform provider for OCI
 4. An Oracle Cloud Infrastructure account
 
-## Scope
+## Scope / Todo
 
-[] Provision a Kubernetes cluster using kubeadm
-[] Install the Oracle Cloud Controller Manager
-[] High Availability (Multi Master)
-[] Upgrade
+- [x] Provision a Kubernetes cluster using kubeadm
+- [x] Install the Oracle Cloud Controller Manager
+- [ ] High Availability (Multi Master)
+- [ ] Upgrade
+- [ ] Networking configuration options (Calico etc)
 
 ## To Do
 
-[] Install the Oracle OCI CSI Storage plugin 
-[] Install the Oracle OCI CNI Networking plugin
+- [ ] Install the Oracle OCI CSI Storage plugin 
+- [ ] Install the Oracle OCI CNI Networking plugin
 
 # Getting started
 
