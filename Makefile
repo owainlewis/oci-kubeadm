@@ -22,6 +22,10 @@ ansible:
 ccm:
 	@ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/ccm.yaml
 
-.PHONY: storage
-storage:
-	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/storage.yaml
+.PHONY: provisioner
+provisioner:
+	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/provisioner.yaml
+
+.PHONY: dashboard
+dashboard:
+	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/dashboard.yaml
