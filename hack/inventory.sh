@@ -3,9 +3,12 @@ AD1=$(terraform output node_ad_1_public_ips)
 AD2=$(terraform output node_ad_2_public_ips)
 AD3=$(terraform output node_ad_3_public_ips)
 
+VCN=$(terraform output vcn_id)
+COMPARTMENT=$(terraform output compartment_id)
+
 echo "Writing hosts.ini file to ansible/hosts.ini"
 
-cat > ansible/hosts.ini << EOL
+cat > ansible/hosts.ini << EOF
 [master]
 $MASTERS
 
@@ -17,4 +20,19 @@ $AD3
 [kube-cluster:children]
 master
 node
-EOL
+EOF
+
+echo "Writing cloud-provider-config file to ansible/roles/addons/ccm/templates/cloud-provider-config.yaml.j2"
+
+cat > ansible/roles/addons/ccm/templates/cloud-provider-config.yaml.j2 << EOF
+auth:
+  useInstancePrincipals: true
+
+compartment: $COMPARTMENT
+vcn: $VCN
+
+loadBalancer:
+  subnet1: $AD1
+  subnet2: $AD2
+  securityListManagementMode: All
+EOF
