@@ -1,12 +1,12 @@
-output "subnet_ad1_id" {
+output "subnet_ad_1_id" {
   value = "${oci_core_subnet.subnet_ad_1.id}"
 }
 
-output "subnet_ad2_id" {
+output "subnet_ad_2_id" {
   value = "${oci_core_subnet.subnet_ad_2.id}"
 }
 
-output "subnet_ad3_id" {
+output "subnet_ad_3_id" {
   value = "${oci_core_subnet.subnet_ad_3.id}"
 }
 

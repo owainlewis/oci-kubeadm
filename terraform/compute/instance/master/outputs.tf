@@ -1,3 +1,3 @@
-output "public_ip" {
-  value = "${oci_core_instance.master.0.public_ip}"
+output "public_ips" {
+  value = "${oci_core_instance.master.*.public_ip}"
 }

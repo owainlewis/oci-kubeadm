@@ -1,5 +1,5 @@
-output "master_public_ip" {
-  value = "${module.master.public_ip}"
+output "master_public_ips" {
+  value = "${module.master.public_ips}"
 }
 
 output "node_ad_1_public_ips" {
@@ -20,4 +20,16 @@ output "compartment_id" {
 
 output "vcn_id" {
   value = "${module.vcn.vcn_id}"
+}
+
+output "subnet_ad_1_id" {
+  value = "${module.vcn.subnet_ad_1_id}"
+}
+
+output "subnet_ad_2_id" {
+  value = "${module.vcn.subnet_ad_2_id}"
+}
+
+output "subnet_ad_3_id" {
+  value = "${module.vcn.subnet_ad_3_id}"
 }

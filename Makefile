@@ -1,22 +1,23 @@
 all: build
 
-.PHONY: infra
-infra:
+.PHONY: create
+create:
 	terraform init
 	terraform apply
-
-.PHONY: build
-build:
-	@ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/site.yaml
-
-ccm:
-	@ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/ccm.yaml
-
-storage:
-	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/storage.yaml
+	hack/inventory.sh
+	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/site.yaml
 
 .PHONY: destroy
 destroy:
 	terraform destroy
 
-rebuild: destroy infra
+.PHONY: rebuild
+rebuild: destroy create
+
+.PHONY: ccm
+ccm:
+	@ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/ccm.yaml
+
+.PHONY: storage
+storage:
+	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini ansible/storage.yaml
