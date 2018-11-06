@@ -15,7 +15,7 @@ In an effort to keep things simple, this project only targets CentOS and Oracle 
 
 1. Create the OCI infrastructure for your cluster. This requires a recent install of the OCI terraform provider.
 
-```
+```sh
 # Update main.tf with your personal settings
 cp main.tf.example main.tf
 # Run Terraform
@@ -24,7 +24,7 @@ terraform apply
 
 2. Run hack/inventory.sh to auto generate an Ansible inventory file and CCM configuration file.
 
-```
+```sh
 ➜  oci-kubeadm git:(master) ✗ ./hack/inventory.sh
 Writing hosts.ini file to ansible/hosts.ini
 Writing cloud-provider-config file to ansible/roles/addons/ccm/templates/cloud-provider-config.yaml.j2
@@ -32,7 +32,7 @@ Writing cloud-provider-config file to ansible/roles/addons/ccm/templates/cloud-p
 
 3. Run Ansible to create a new kubeadm K8s cluster
 
-```
+```sh
 make ansible
 ```
 
@@ -49,13 +49,13 @@ k8s-node-ad-3-0     Ready     <none>    3h        v1.12.2
 
 4. Install the Cloud Controller Manager (CCM)
 
-```
+```sh
 ➜  oci-kubeadm git:(master) ✗ make ccm
 ```
 
 Check that the CCM has succesfully installed. If everything is working your nodes should be labelled correctly with OCI information.
 
-```
+```sh
 ➜  oci-kubeadm git:(master) ✗ k get node k8s-node-ad-1-0  -o go-template='{{range $k, $v := .metadata.labels}}{{$k}}={{$v}}{{"\n"}}{{end}}'
 beta.kubernetes.io/arch=amd64
 beta.kubernetes.io/instance-type=VM.Standard1.1
