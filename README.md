@@ -2,7 +2,7 @@
 
 This project will help you create a Kubernetes cluster on Oracle Cloud Infrastructure. It uses Terraform to provision infrastructure and Ansible to configure and install Kubernetes.
 
-In an effort to keep things simple, this project only targets CentOS and Oracle Linux.
+In an effort to keep things simple, this project only targets CentOS and Oracle Linux as well as ignoring kubeadm upgrades (for now!).
 
 ### Prerequisites
 
