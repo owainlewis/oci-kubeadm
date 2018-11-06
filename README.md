@@ -4,25 +4,12 @@ This project will help you create a Kubernetes cluster on Oracle Cloud Infrastru
 
 In an effort to keep things simple, this project only targets CentOS and Oracle Linux.
 
-### Prerequisites 
+### Prerequisites
 
 1. Terraform
 2. Ansible
 3. The Terraform provider for OCI
 4. An Oracle Cloud Infrastructure account
-
-## Scope / Todo
-
-- [x] Provision a Kubernetes cluster using kubeadm
-- [x] Install the Oracle Cloud Controller Manager
-- [ ] High Availability (Multi Master)
-- [ ] Upgrade
-- [ ] Networking configuration options (Calico etc)
-
-## To Do
-
-- [ ] Install the Oracle OCI CSI Storage plugin 
-- [ ] Install the Oracle OCI CNI Networking plugin
 
 # Getting started
 
@@ -35,29 +22,21 @@ cp main.tf.example main.tf
 terraform apply
 ```
 
-2. Update the hosts.ini file with the cluster information generated above
+2. Run hack/inventory.sh to auto generate an Ansible inventory file and CCM configuration file.
 
 ```
-[master]
-192.16.35.12
-
-[node]
-192.16.35.[10:11:12]
-
-[kube-cluster:children]
-master
-node
+➜  oci-kubeadm git:(master) ✗ ./hack/inventory.sh
+Writing hosts.ini file to ansible/hosts.ini
+Writing cloud-provider-config file to ansible/roles/addons/ccm/templates/cloud-provider-config.yaml.j2
 ```
 
-### Run the Ansible playbook
+3. Run Ansible to create a new kubeadm K8s cluster
 
-```sh
-$ make
+```
+make ansible
 ```
 
-### Verify
-
-Verify cluster is fully running:
+Verify the cluster has been created successfully
 
 ```sh
 ➜  oci-kubeadm git:(master) k get nodes
@@ -66,4 +45,22 @@ k8s-master-ad-1-0   Ready     master    3h        v1.12.2
 k8s-node-ad-1-0     Ready     <none>    3h        v1.12.2
 k8s-node-ad-2-0     Ready     <none>    3h        v1.12.2
 k8s-node-ad-3-0     Ready     <none>    3h        v1.12.2
+```
+
+4. Install the Cloud Controller Manager (CCM)
+
+```
+➜  oci-kubeadm git:(master) ✗ make ccm
+```
+
+Check that the CCM has succesfully installed. If everything is working your nodes should be labelled correctly with OCI information.
+
+```
+➜  oci-kubeadm git:(master) ✗ k get node k8s-node-ad-1-0  -o go-template='{{range $k, $v := .metadata.labels}}{{$k}}={{$v}}{{"\n"}}{{end}}'
+beta.kubernetes.io/arch=amd64
+beta.kubernetes.io/instance-type=VM.Standard1.1
+beta.kubernetes.io/os=linux
+failure-domain.beta.kubernetes.io/region=eu-frankfurt-1
+failure-domain.beta.kubernetes.io/zone=EU-FRANKFURT-1-AD-1
+kubernetes.io/hostname=k8s-node-ad-1-0
 ```
