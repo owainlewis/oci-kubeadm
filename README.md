@@ -64,3 +64,16 @@ failure-domain.beta.kubernetes.io/region=eu-frankfurt-1
 failure-domain.beta.kubernetes.io/zone=EU-FRANKFURT-1-AD-1
 kubernetes.io/hostname=k8s-node-ad-1-0
 ```
+
+5. Install the block storage and file storage (NFS) provisioner
+
+```
+make provisioner
+```
+
+6. Install the OCI Flexdriver (temporary while we await CSI).
+
+```
+kubectl create secret generic oci-flexvolume-driver-kubeconfig -n kube-system --from-file=kubeconfig=ansible/admin.conf
+kubectl create secret generic oci-flexvolume-driver -n kube-system --from-file=config.yaml=../flexvolume-config.yaml
+```
