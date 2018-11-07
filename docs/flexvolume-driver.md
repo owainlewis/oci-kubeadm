@@ -34,7 +34,7 @@ auth:
   key: |
     -----BEGIN RSA PRIVATE KEY-----
     -----END RSA PRIVATE KEY-----
-  fingerprint: a4:bc:fg::hj...
+  fingerprint: a4:bc:fg:hj...
 ```
 
 ## 3.) Apply manifests
