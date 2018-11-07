@@ -34,7 +34,7 @@ auth:
   key: |
     -----BEGIN RSA PRIVATE KEY-----
     -----END RSA PRIVATE KEY-----
-  fingerprint: a4:bb:34:43:54:c5:af:a5:4b:23:ce:82:2d:7f:12:45
+  fingerprint: a4:bc:fg::hj...
 ```
 
 ## 3.) Apply manifests
@@ -42,4 +42,6 @@ auth:
 Install the flexvolume driver manifests
 
 ```
+kubectl apply -f https://raw.githubusercontent.com/oracle/oci-cloud-controller-manager/master/manifests/flexvolume-driver/oci-flexvolume-driver-rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/oracle/oci-cloud-controller-manager/master/manifests/flexvolume-driver/oci-flexvolume-driver.yaml
 ```
