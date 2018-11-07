@@ -1,3 +1,5 @@
+#!/bin/bash
+
 MASTERS=$(terraform output master_public_ips)
 AD1=$(terraform output node_ad_1_public_ips)
 AD2=$(terraform output node_ad_2_public_ips)
