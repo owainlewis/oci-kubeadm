@@ -1,17 +1,42 @@
 ---
+- name: Check for Broadcom Driver (bnxt_en)
+  shell: /usr/sbin/lsmod | grep bnxt_en
+  ignore_errors: true
+  register: has_broadcom_driver
 
-- name: Install Kubernetes packages
-  include_tasks: pkg.yml
+- name: Disable offload for ens3
+  shell: "/usr/sbin/ethtool -K ens3 tx off"
+  when: has_broadcom_driver
+
+- name: Add Kubernetes yum repository
+  yum_repository:
+    name: Kubernetes
+    description: Kubernetes Repository
+    file: kubernetes
+    baseurl: http://yum.kubernetes.io/repos/kubernetes-el7-x86_64
+    enabled: yes
+    gpgcheck: no
+
+- name: Install YUM packages (RHEL/CentOS)
+  yum:
+    name: "{{ pkgs }}"
+    update_cache: yes
 
 - name: Disable system swap
   shell: "swapoff -a"
 
-# NOTE please make this more specific
 - name: Stop and disable firewalld
   service:
     name: firewalld
     state: stopped
     enabled: False
+
+- name: Disable selinux (ephemeral)
+  shell: setenforce 0
+
+- name: Disable selinux (persistent)
+  selinux:
+    state: disabled
 
 - name: Remove current swaps from fstab
   lineinfile:

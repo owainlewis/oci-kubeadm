@@ -33,3 +33,11 @@ output "subnet_ad_2_id" {
 output "subnet_ad_3_id" {
   value = "${module.vcn.subnet_ad_3_id}"
 }
+
+output "loadbalancer_subnet_1_id" {
+  value = "${module.vcn.loadbalancer_subnet_1_id}"
+}
+
+output "loadbalancer_subnet_2_id" {
+  value = "${module.vcn.loadbalancer_subnet_2_id}"
+}

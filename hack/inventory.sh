@@ -8,8 +8,8 @@ AD3=$(terraform output node_ad_3_public_ips)
 VCN=$(terraform output vcn_id)
 COMPARTMENT=$(terraform output compartment_id)
 
-SUBNET_AD_1=$(terraform output subnet_ad_1_id)
-SUBNET_AD_2=$(terraform output subnet_ad_2_id)
+SUBNET_AD_1=$(terraform output loadbalancer_subnet_1_id)
+SUBNET_AD_2=$(terraform output loadbalancer_subnet_2_id)
 
 echo "Writing hosts.ini file to ansible/hosts.ini"
 

@@ -16,3 +16,11 @@ variable node_subnet_ad_2_cidr {
 variable node_subnet_ad_3_cidr {
   default = "10.0.2.0/24"
 }
+
+variable loadbalancer_subnet_1_cidr {
+  default = "10.0.3.0/26"
+}
+
+variable loadbalancer_subnet_2_cidr {
+  default = "10.0.4.0/26"
+}
