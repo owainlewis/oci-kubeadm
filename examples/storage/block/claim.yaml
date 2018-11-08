@@ -1,0 +1,33 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: oci-block-volume-nginx
+spec:
+  storageClassName: oci
+  selector:
+    matchLabels:
+      failure-domain.beta.kubernetes.io/zone: AD-1
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  volumes:
+    - name: nginx
+      persistentVolumeClaim:
+        claimName: oci-block-volume-nginx
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      volumeMounts:
+      - mountPath: "/usr/share/nginx/html"
+        name: nginx
