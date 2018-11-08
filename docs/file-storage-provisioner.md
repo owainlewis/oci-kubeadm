@@ -1,44 +1,83 @@
 # File Storage
 
-Ensure you have a cloud provider configuration file
+### Install
 
-```yaml
+Ensure you have the OCI FSS volume provisioner installed. Run the following to install on your cluster:
+
+```
+hack/inventory.sh
+make provisioner
+```
+
+### Create mount target
+
+We first need to create a mount target
+
+oci fs mount-target create --availability-domain=UpwH:UK-LONDON-1-AD-1 \
+--compartment-id=$(terraform output compartment_id) \
+--subnet-id=$(terraform output subnet_ad_1_id)
+
+### Create storage class 
+
+Create a new StorageClass that references your mount target
+
+```sh
 cat <<'$EOF' | kubectl create -f -
+kind: StorageClass
+apiVersion: storage.k8s.io/v1beta1
+metadata:
+  name: oci-fss
+provisioner: oracle.com/oci-fss
+parameters:
+  mntTargetId: ocid1.mounttarget.oc1.uk_london_1.aaaaaa4np2snssoinruhellqojxwiotvnmwwy33omrxw4ljrfvqwiljr
 $EOF
 ```
 
-```yaml
+### Create PVC
+
+```sh
 cat <<'$EOF' | kubectl create -f -
-apiVersion: apps/v1beta1
-kind: Deployment
+kind: PersistentVolumeClaim
+apiVersion: v1
 metadata:
-  name: oci-fss-volume-provisioner
-  namespace: kube-system
+  name: nginx-fss-volume
 spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: oci-fss-volume-provisioner
-    spec:
-      serviceAccountName: oci-volume-provisioner
-      containers:
-        - name: oci-fss-volume-provisioner
-          image: iad.ocir.io/oracle/cloud-provider-oci:latest
-          env:
-            - name: NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-            - name: PROVISIONER_TYPE
-              value: oracle.com/oci-fss
-          volumeMounts:
-            - name: config
-              mountPath: /etc/oci/
-              readOnly: true
-      volumes:
-        - name: config
-          secret:
-            secretName: oci-volume-provisioner
+  storageClassName: oci-fss
+  selector:
+    matchLabels:
+      failure-domain.beta.kubernetes.io/zone: AD-1
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+$EOF
+```
+
+
+### Use the PVC
+
+You can now create a Pod that uses FSS to persist data
+
+```sh
+cat <<'$EOF' | kubectl create -f -
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  volumes:
+    - name: nginx
+      persistentVolumeClaim:
+        claimName: nginx-fss-volume
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      volumeMounts:
+      - mountPath: "/usr/share/nginx/html"
+        name: nginx
 $EOF
 ```
