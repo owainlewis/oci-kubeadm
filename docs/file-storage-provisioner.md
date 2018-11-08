@@ -14,7 +14,7 @@ make provisioner
 We first need to create a mount target
 
 ```sh
-oci fs mount-target create --availability-domain=UpwH:UK-LONDON-1-AD-1 \
+$ oci fs mount-target create --availability-domain=UpwH:UK-LONDON-1-AD-1 \
 --compartment-id=$(terraform output compartment_id) \
 --subnet-id=$(terraform output subnet_ad_1_id)
 ```
