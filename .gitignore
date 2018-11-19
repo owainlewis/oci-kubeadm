@@ -1,10 +1,8 @@
 admin.conf
 *.retry
 admin.conf
-main.tf
 .terraform
 *.tfstate
 *.tfstate.backup
 
 cloud-provider-config.yaml.j2
-
