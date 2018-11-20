@@ -1,1 +1,14 @@
-
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nginx-fss-volume
+spec:
+  storageClassName: oci-fss
+  selector:
+    matchLabels:
+      failure-domain.beta.kubernetes.io/zone: AD-1
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi

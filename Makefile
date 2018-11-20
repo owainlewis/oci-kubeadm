@@ -1,4 +1,4 @@
-ANSIBLE_CMD=ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/hosts.ini
+ANSIBLE_CMD=ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vi ansible/hosts.ini
 
 all: build
 

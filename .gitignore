@@ -6,3 +6,4 @@ admin.conf
 *.tfstate.backup
 
 cloud-provider-config.yaml.j2
+/main.tf
