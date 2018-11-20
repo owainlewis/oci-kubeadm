@@ -26,7 +26,7 @@ spec:
     matchLabels:
       failure-domain.beta.kubernetes.io/zone: AD-1
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 50Gi
