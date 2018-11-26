@@ -22,6 +22,20 @@ cp main.tf.example main.tf
 terraform apply
 ```
 
+If you want to use instance principal authentication, make sure you have a dynamic group setup with permissions that targets the instances in your cluster.
+
+Create a dynamic group for your instances:
+
+```
+All {instance.compartment.id = 'ocid1.compartment.oc1..'}
+```
+
+Create a policy that grants the instances appropriate permissions:
+
+```
+Allow group id DYNAMIC_GROUP_OCID to manage all-resources in compartment id COMPARTMENT_OCID
+```
+
 2. Run hack/inventory.sh to auto generate an Ansible inventory file and CCM configuration file.
 
 ```sh

@@ -7,7 +7,6 @@ create:
 	terraform init
 	terraform apply
 	hack/inventory.sh
-	$ANSIBLE_CMD ansible/site.yaml
 
 .PHONY: destroy
 destroy:
