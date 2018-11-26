@@ -1,13 +1,58 @@
 module "k8s" {
 
   source             = "./terraform"
-  
-  # Authentication  
+
+  # Change the following to match your own credentials
+
   tenancy_ocid       = "ocid1.tenancy.oc1.."
   compartment_ocid   = "ocid1.compartment.oc1.."
   user_ocid          = "ocid1.user.oc1.."
   private_key_path   = "/Users/owainlewis/.oci/oci_api_key.pem"
   fingerprint        = "a4:bb:34:43:54:..."
   region             = "uk-london-1"
-  ssh_public_key     = "${file("/Users/owainlewis/.ssh/id_rsa.pub")}"
+  ssh_public_key     = "${file(pathexpand("~/.ssh/id_rsa.pub"))}"
+}
+
+output "master_public_ips" {
+  value = "${module.k8s.master_public_ips}"
+}
+
+output "node_ad_1_public_ips" {
+  value = "${module.k8s.node_ad_1_public_ips}"
+}
+
+output "node_ad_2_public_ips" {
+  value = "${module.k8s.node_ad_2_public_ips}"
+}
+
+output "node_ad_3_public_ips" {
+  value = "${module.k8s.node_ad_3_public_ips}"
+}
+
+output "compartment_id" {
+  value = "${module.k8s.compartment_id}"
+}
+
+output "vcn_id" {
+  value = "${module.k8s.vcn_id}"
+}
+
+output "subnet_ad_1_id" {
+  value = "${module.k8s.subnet_ad_1_id}"
+}
+
+output "subnet_ad_2_id" {
+  value = "${module.k8s.subnet_ad_2_id}"
+}
+
+output "subnet_ad_3_id" {
+  value = "${module.k8s.subnet_ad_3_id}"
+}
+
+output "loadbalancer_subnet_1_id" {
+  value = "${module.k8s.loadbalancer_subnet_1_id}"
+}
+
+output "loadbalancer_subnet_2_id" {
+  value = "${module.k8s.loadbalancer_subnet_2_id}"
 }
