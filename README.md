@@ -28,10 +28,12 @@ make create
 make ansible
 ```
 
+An admin.conf kubeconfig file will be created in the ansible directory.
+
 Verify the cluster has been created successfully
 
 ```sh
-➜  oci-kubeadm git:(master) k get nodes
+➜  oci-kubeadm git:(master) KUBECONFIG=ansible/admin.conf kubectl get nodes
 NAME                STATUS    ROLES     AGE       VERSION
 k8s-master-ad-1-0   Ready     master    3h        v1.12.2
 k8s-node-ad-1-0     Ready     <none>    3h        v1.12.2
