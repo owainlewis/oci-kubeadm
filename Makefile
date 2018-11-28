@@ -10,10 +10,10 @@ create:
 destroy:
 	terraform destroy
 
-rebuild: destroy create
-
 ansible:
 	$(ANSIBLE_CMD) ansible/site.yaml
+
+# The following tasks are used to install components into your K8s cluster
 
 ccm:
 	$(ANSIBLE_CMD) ansible/ccm.yaml
