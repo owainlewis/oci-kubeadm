@@ -19,10 +19,32 @@ In an effort to keep things simple, this project only targets CentOS and Oracle 
 # Update main.tf with your personal settings
 cp main.tf.example main.tf
 # Run Terraform
-terraform apply
+make create
 ```
 
-If you want to use instance principal authentication, make sure you have a dynamic group setup with permissions that targets the instances in your cluster.
+2. Run Ansible to create a new kubeadm K8s cluster
+
+```sh
+make ansible
+```
+
+Verify the cluster has been created successfully
+
+```sh
+➜  oci-kubeadm git:(master) k get nodes
+NAME                STATUS    ROLES     AGE       VERSION
+k8s-master-ad-1-0   Ready     master    3h        v1.12.2
+k8s-node-ad-1-0     Ready     <none>    3h        v1.12.2
+k8s-node-ad-2-0     Ready     <none>    3h        v1.12.2
+k8s-node-ad-3-0     Ready     <none>    3h        v1.12.2
+```
+
+## Note
+
+If you want to use Instance Principal authentication, 
+make sure you have a dynamic group setup with permissions that targets the instances in your cluster.
+
+### Example
 
 Create a dynamic group for your instances:
 
@@ -44,24 +66,9 @@ Writing hosts.ini file to ansible/hosts.ini
 Writing cloud-provider-config file to ansible/roles/addons/ccm/templates/cloud-provider-config.yaml.j2
 ```
 
-3. Run Ansible to create a new kubeadm K8s cluster
+## Install CCM
 
-```sh
-make ansible
-```
-
-Verify the cluster has been created successfully
-
-```sh
-➜  oci-kubeadm git:(master) k get nodes
-NAME                STATUS    ROLES     AGE       VERSION
-k8s-master-ad-1-0   Ready     master    3h        v1.12.2
-k8s-node-ad-1-0     Ready     <none>    3h        v1.12.2
-k8s-node-ad-2-0     Ready     <none>    3h        v1.12.2
-k8s-node-ad-3-0     Ready     <none>    3h        v1.12.2
-```
-
-4. Install the Cloud Controller Manager (CCM)
+Install the Oracle Cloud Controller Manager (CCM) into your newly created K8s cluster.
 
 ```sh
 ➜  oci-kubeadm git:(master) ✗ make ccm
@@ -79,15 +86,24 @@ failure-domain.beta.kubernetes.io/zone=EU-FRANKFURT-1-AD-1
 kubernetes.io/hostname=k8s-node-ad-1-0
 ```
 
-5. Install the block storage and file storage (NFS) provisioner
+## Optional tasks
+
+Install the block storage and file storage (NFS) provisioner
 
 ```
 make provisioner
 ```
 
-6. Install the OCI Flexdriver (temporary while we await CSI).
+Install the OCI Flexdriver.
 
 ```
-kubectl create secret generic oci-flexvolume-driver-kubeconfig -n kube-system --from-file=kubeconfig=ansible/admin.conf
-kubectl create secret generic oci-flexvolume-driver -n kube-system --from-file=config.yaml=../flexvolume-config.yaml
+kubectl create secret generic \
+oci-flexvolume-driver-kubeconfig \
+-n kube-system\
+--from-file=kubeconfig=ansible/admin.conf
+
+kubectl create secret generic \
+oci-flexvolume-driver \
+-n kube-system \
+--from-file=config.yaml=flexvolume-config.yaml
 ```
