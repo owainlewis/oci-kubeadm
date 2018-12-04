@@ -10,6 +10,7 @@ create:
 destroy:
 	terraform destroy
 
+.PHONY: ansible
 ansible:
 	$(ANSIBLE_CMD) ansible/site.yaml
 
